@@ -1404,10 +1404,13 @@
                 let actualPage = pathArr.filter((element => element.includes(".html"))).toString();
                 const actualPageLength = actualPage.length;
                 const lengthDiff = pathLength - actualPageLength;
-                const newPathname = pathname.slice(0, lengthDiff);
+                const newPathname = pathname.slice(0, lengthDiff) + page;
                 const targetId = targetBlock.replace(".", "#");
-                window.location.pathname = "";
-                if (actualPage !== page) window.location.pathname = `${newPathname + page + targetId}`; else pageNavScroll();
+                if (actualPage !== page) {
+                    window.location.pathname = "";
+                    window.location.hash = "";
+                    window.location = newPathname + targetId;
+                } else pageNavScroll();
             } else pageNavScroll();
             function pageNavScroll() {
                 const targetBlockElement = document.querySelector(targetBlock);
