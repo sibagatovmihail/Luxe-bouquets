@@ -1406,10 +1406,14 @@
                 const lengthDiff = pathLength - actualPageLength;
                 const newPathname = pathname.slice(0, lengthDiff) + page;
                 const targetId = targetBlock.replace(".", "#");
+                alert(actualPage);
+                alert(page);
                 if (actualPage !== page) {
                     window.location.pathname = "";
                     window.location.hash = "";
-                    window.location = newPathname + targetId;
+                    window.location = "";
+                    alert(`${newPathname + targetId}`);
+                    window.location = `${newPathname + targetId}`;
                 } else pageNavScroll();
             } else pageNavScroll();
             function pageNavScroll() {
