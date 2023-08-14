@@ -1397,7 +1397,17 @@
         }
         modules_flsModules.popup = new Popup({});
         let gotoblock_gotoBlock = (targetBlock, page = "", noHeader = false, speed = 500, offsetTop = 0) => {
-            if (page && page !== true) if (window.location.pathname !== page) window.location = `${page}#${targetBlock.replace(".", "")}`; else pageNavScroll(); else pageNavScroll();
+            if (page && page !== true) {
+                const pathname = window.location.pathname;
+                const pathArr = pathname.split("/");
+                const pathLength = pathname.length;
+                let actualPage = pathArr.filter((element => element.includes(".html"))).toString();
+                const actualPageLength = actualPage.length;
+                const lengthDiff = pathLength - actualPageLength;
+                const newPathname = pathname.slice(1, lengthDiff);
+                console.log(actualPage);
+                if (actualPage !== page) window.location = `${newPathname + page}#${targetBlock.replace(".", "")}`; else pageNavScroll();
+            } else pageNavScroll();
             function pageNavScroll() {
                 const targetBlockElement = document.querySelector(targetBlock);
                 if (targetBlockElement) {
@@ -5445,18 +5455,22 @@
             if (documentElement.classList.contains("lock")) documentElement.classList.remove("lock");
         }));
         elementHeight();
-        if (loc.hash) {
-            const hash = loc.hash;
-            if (hash !== "#sign-up") loc.hash = "";
-            const element = document.querySelector(hash);
-            const headerItemHeight = header.offsetHeight;
-            let elementPosition = element.getBoundingClientRect().top - scrollY + headerItemHeight;
-            console.log(element.getBoundingClientRect().top - scrollX + headerItemHeight);
-            window.scrollTo({
-                top: elementPosition,
-                behavior: "smooth"
-            });
-        }
+        window.addEventListener("load", (() => {
+            if (loc.hash) {
+                const hash = loc.hash;
+                if (hash !== "#sign-up") loc.hash = "";
+                setTimeout((() => {
+                    const element = document.querySelector(hash);
+                    console.log(element);
+                    const headerItemHeight = header.offsetHeight;
+                    let elementPosition = element.getBoundingClientRect().top - scrollY - headerItemHeight;
+                    window.scrollTo({
+                        top: elementPosition,
+                        behavior: "smooth"
+                    });
+                }), 800);
+            }
+        }));
         window.addEventListener("resize", elementHeight);
         function elementHeight() {
             elemHeight = header.offsetHeight;
