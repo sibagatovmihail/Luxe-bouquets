@@ -1406,7 +1406,7 @@
                 const lengthDiff = pathLength - actualPageLength;
                 const newPathname = pathname.slice(0, lengthDiff);
                 window.location.pathname = "";
-                if (actualPage !== page) window.location.pathname = `${newPathname + page + "#" + targetBlock.replace(".", "")}`; else pageNavScroll();
+                if (actualPage !== page) window.location.pathname = `${newPathname + page + targetBlock.replace(".", "#")}`; else pageNavScroll();
             } else pageNavScroll();
             function pageNavScroll() {
                 const targetBlockElement = document.querySelector(targetBlock);
